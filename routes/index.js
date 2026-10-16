@@ -75,4 +75,14 @@ router.post('/readCustomerInfoAndRespond', function(req, res, next) {
 
 });
 
+// REST/JSON version of the customer form
+router.post('/api/customer', function(req, res, next) {
+  var value_name = req.body.name;
+  var value_email = req.body.email;
+  res.json({
+    message: "Welcome " + value_name,
+    email: value_email
+  });
+});
+
 module.exports = router;

@@ -1,48 +1,49 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title><%= title %></title>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-</head>
-<body>
-<h1><%= title %></h1>
-<p>Welcome to <%= title %>.   Let's test reading get+post data</p>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
 
-<br/><br/>
-<b>New Customer Form </b> to test POST request and reading data using URI  /readNameAndRespond
-<br/>
-<form action="/readCustomerInfoAndRespond" method="post">
+    <h2>Traditional HTML Form</h2>
+    <form action="/readCustomerInfoAndRespond" method="POST">
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <button type="submit">Submit</button>
+    </form>
 
-  Name: <input type="text" name="name"> </input>
-  <br/>
-  Email: <input type="text" name="email"> </input>
-  <br/>
-  <input type="submit" value="Go"/>
-</form>
+    <hr>
 
-<br><br><br>
-<hr>
+    <h2>REST / fetch() Version</h2>
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <button type="button" id="submitBtn">Submit with fetch</button>
 
-<b>Form to test GET request</b> and reading the data using URI /readNameAndRespond
-<br/>
-<form action="/readNameAndRespond" method="get">
+    <div id="result" style="margin-top: 1em; font-weight: bold;"></div>
 
-  Name: <input type="text" name="name"> </input>
-  <br/>
-  <input type="submit" value="Go"/>
-</form>
-<br><br><br>
-<hr>
-<b>Form to test POST request</b> and reading data using URI  /readNameAndRespond
-<br/>
-<form action="/readNameAndRespond" method="post">
+    <script>
+      document.getElementById("submitBtn").addEventListener("click", async () => {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
 
-  Name: <input type="text" name="name"> </input>
-  <br/>
-  <input type="submit" value="Go"/>
-</form>
+        const response = await fetch("/api/customer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email
+          })
+        });
 
-
-
-</body>
+        const data = await response.json();
+        document.getElementById("result").innerHTML =
+          data.message + "<br>" + data.email;
+      });
+    </script>
+  </body>
 </html>
