@@ -8,7 +8,8 @@
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
 
-    <h2>Traditional HTML Form</h2>
+    <h2>Part A: Traditional HTML Form</h2>
+    <!-- This form submits natively via the browser and loads a new page -->
     <form action="/readCustomerInfoAndRespond" method="POST">
       <input type="text" name="name" placeholder="Name" required>
       <input type="email" name="email" placeholder="Email" required>
@@ -17,32 +18,30 @@
 
     <hr>
 
-    <h2>REST / fetch() Version</h2>
-    <input type="text" id="name" placeholder="Name" required>
-    <input type="email" id="email" placeholder="Email" required>
+    <h2>Part B: REST / fetch() Version</h2>
+    <!-- These inputs are loose; JavaScript handles the submission dynamically -->
+    <input type="text" id="name" placeholder="Name">
+    <input type="email" id="email" placeholder="Email">
     <button type="button" id="submitBtn">Submit with fetch</button>
 
+    <!-- The JavaScript will inject the response into this div -->
     <div id="result" style="margin-top: 1em; font-weight: bold;"></div>
 
     <script>
       document.getElementById("submitBtn").addEventListener("click", async () => {
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-
         const response = await fetch("/api/customer", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            name: name,
-            email: email
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value
           })
         });
 
         const data = await response.json();
-        document.getElementById("result").innerHTML =
-          data.message + "<br>" + data.email;
+        document.getElementById("result").innerHTML = data.message + "<br>" + data.email;
       });
     </script>
   </body>

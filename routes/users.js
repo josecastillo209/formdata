@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', (req, res, next) => {
+  // Returning JSON makes this easier to consume with fetch() on the frontend
+  res.json({ message: 'respond with a resource' });
 });
 
 module.exports = router;
